@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import 'dotenv/config';
 
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
@@ -22,8 +24,6 @@ async function main() {
 
     const transport = new StdioServerTransport();
     await server.connect(transport);
-
-    console.log(`Stdio server running`);
 }
 
 main().catch(err => {
