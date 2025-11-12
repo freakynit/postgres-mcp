@@ -145,3 +145,5 @@ npx @modelcontextprotocol/inspector node src/index.js
 ## License
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+
+![Postgres-MCP Server Avatar Image](./postgres-mcp-avatar.png)
