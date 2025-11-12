@@ -1,6 +1,6 @@
 {
   "name": "@freakynit/postgres-mcp",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A lightweight MCP server built to query Postgres database using SQL or plain English",
   "bin": {
     "postgres-mcp": "src/index.js"
