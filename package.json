@@ -33,5 +33,13 @@
     "node-sql-parser": "^5.3.13",
     "pg": "^8.16.3",
     "zod": "^3.25.73"
+  },
+  "homepage": "https://github.com/freakynit/postgres-mcp#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/freakynit/postgres-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/freakynit/postgres-mcp/issues"
   }
 }
