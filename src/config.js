@@ -9,15 +9,12 @@ const envSchema = z.object({
     POSTGRES_SSL: z.enum(['true', 'false']).default('false'),
     POSTGRES_VERIFY: z.enum(['true', 'false']).default('false'),
     POSTGRES_SEND_RECEIVE_TIMEOUT: z.string().default('60'),
-    POSTGRES_CONNECT_TIMEOUT: z.string().default('60'),
-    LLM_API_KEY: z.string().optional(),
-    LLM_API_URL: z.string().url().default('https://api.openai.com/v1'),
-    LLM_MODEL: z.string().default('gpt-4o')
+    POSTGRES_CONNECT_TIMEOUT: z.string().default('60')
 });
 
 const env = envSchema.parse(process.env);
 
-export default {
+const config = {
     db: {
         host: env.POSTGRES_HOST,
         port: Number(env.POSTGRES_PORT),
@@ -28,13 +25,10 @@ export default {
         statementTimeout: Number(env.POSTGRES_SEND_RECEIVE_TIMEOUT) * 1000,
         connectionTimeoutMillis: Number(env.POSTGRES_CONNECT_TIMEOUT) * 1000
     },
-    openai: {
-        apiKey: env.LLM_API_KEY,
-        basePath: env.LLM_API_URL,
-        model: env.LLM_MODEL
-    },
     app: {
         name: 'postgres-mcp',
         version: '1.0.0'
     }
 };
+
+export default config;

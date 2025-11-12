@@ -1,6 +1,6 @@
 {
   "name": "@freakynit/postgres-mcp",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "description": "A lightweight MCP server built to query Postgres database using SQL or plain English",
   "bin": {
     "postgres-mcp": "src/index.js"
@@ -8,18 +8,29 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js",
+    "temp": "node src/temp.js"
   },
   "engines": {
     "node": ">=14"
   },
-  "keywords": ["mcp", "nodejs", "node", "postgres", "postgre", "query", "sql", "english"],
-  "author": "Nitin Bansal",
+  "keywords": [
+    "mcp",
+    "nodejs",
+    "node",
+    "postgres",
+    "postgre",
+    "query",
+    "sql",
+    "english"
+  ],
+  "author": "Nitin Bansal <nitinbansal85@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.15.0",
+    "@modelcontextprotocol/sdk": "^1.15.1",
     "dotenv": "^17.0.1",
-    "openai": "^5.8.2",
+    "node-sql-parser": "^5.3.13",
     "pg": "^8.16.3",
     "zod": "^3.25.73"
   }

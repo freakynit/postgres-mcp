@@ -1,29 +1,42 @@
 # Postgres MCP
 
-1. A lightweight MCP (Model Context Protocol) server built to query Postgres database. 
-2. It provides tools for `running raw SQL queries`, `introspecting schema`, and `querying using plain English`.
-3. You can use any OpenAI compatible LLM provider for English to SQL translation. This is fully automated, and you don't need to tell it anything.
+A lightweight MCP (Model Context Protocol) server built to query Postgres database using SQL or plain English commands. It provides comprehensive tools for database operations, table introspection, and query execution with smart permission handling.
+
+## Features
+
+### Smart Query Permission Handling
+- **Read-only queries**: Automatically approved (SELECT, EXPLAIN, SHOW, VALUES)
+- **Read-write queries**: User confirmation required (INSERT, UPDATE, DELETE, MERGE)
+- **Admin/DDL queries**: Elevated permission required (CREATE, ALTER, DROP, etc.)
+- **Dry-run mode**: Validate queries without execution
+
+### Comprehensive Table Introspection
+- Column definitions with types and constraints
+- Primary and foreign key relationships
+- Index definitions
+- Triggers and check constraints
+
+### Database Management
+- Multiple database switching capability
+- Robust error handling and rollback
 
 ## Available Tools
 
 | Tool                    | Description                                              |
 | ----------------------- | -------------------------------------------------------- |
-| `execute_raw_query`     | Run arbitrary SQL and return rows                        |
+| `execute_raw_query`     | Execute SQL queries with permission validation and dry-run support |
 | `list_tables`           | List all non-system tables                               |
-| `describe_table`        | Get column names, types, and nullability for a table     |
-| `execute_english_query` | Translate natural language to SQL and optionally execute |
+| `describe_tables`       | Get comprehensive table information including columns, indexes, triggers, and constraints |
+| `switch_database`       | Switch the active database connection                    |
 
 ### Minimum needed environment variables
 1. `POSTGRES_HOST`
 2. `POSTGRES_USER`
 3. `POSTGRES_PASSWORD`
 4. `POSTGRES_DATABASE`
-5. `LLM_API_KEY`: Needed only if you want English language query capability
-6. `LLM_API_URL`: Needed only if you are using any other LLM provider other than OpenAI
 
 ### Other environment variables
 1. `POSTGRES_PORT`
-2. `LLM_MODEL`
 3. `POSTGRES_SSL` (boolean)
 4. `POSTGRES_VERIFY` (boolean)
 5. `POSTGRES_SEND_RECEIVE_TIMEOUT` (in seconds)
@@ -41,9 +54,7 @@
         "POSTGRES_HOST": "<POSTGRES HOST>",
         "POSTGRES_USER": "<POSTGRES USER>",
         "POSTGRES_PASSWORD": "<POSTGRES PASSWORD>",
-        "POSTGRES_DATABASE": "<POSTGRES DATABASE>",
-        "LLM_API_KEY": "<LLM API KEY if using english language queries>",
-        "LLM_API_URL": "<LLM API ENDPOINT if not using OpenAI>"
+        "POSTGRES_DATABASE": "<POSTGRES DATABASE>"
       }
     }
   }
@@ -60,9 +71,7 @@
         "POSTGRES_HOST": "<POSTGRES HOST>",
         "POSTGRES_USER": "<POSTGRES USER>",
         "POSTGRES_PASSWORD": "<POSTGRES PASSWORD>",
-        "POSTGRES_DATABASE": "<POSTGRES DATABASE>",
-        "LLM_API_KEY": "<LLM API KEY if using english language queries>",
-        "LLM_API_URL": "<LLM API ENDPOINT if not using OpenAI>"
+        "POSTGRES_DATABASE": "<POSTGRES DATABASE>"
       }
     }
   }
@@ -77,9 +86,13 @@
 
 * Node.js
 * A PostgreSQL server
-* An OpenAI (or any OpenAI compatible provider) API key and the endpoint (if not using OpenAI)
 
 ### Installation
+```bash
+npm i -g @freakynit/postgres-mcp
+```
+
+OR
 
 ```bash
 git clone https://github.com/freakynit/postgres-mcp.git
@@ -104,16 +117,13 @@ POSTGRES_SSL=false                      # Or true
 POSTGRES_VERIFY=false                   # Verify server cert if SSL true
 
 # Timeouts (optional, seconds)
-POSTGRES_SEND_RECEIVE_TIMEOUT=60
-POSTGRES_CONNECT_TIMEOUT=60
-
-# OpenAI
-LLM_API_KEY=sk-...                      # Needed only if you want English language query capability
-LLM_API_URL=https://api.openai.com/v1   # Optional, needed only if you are using any other LLM provider other than OpenAI
-LLM_MODEL=gpt-4o                        # Optional, default gpt-4o
+POSTGRES_SEND_RECEIVE_TIMEOUT=60        # Query timeout
+POSTGRES_CONNECT_TIMEOUT=60             # Connection timeout
 ```
 
 ## Usage
+
+### Local Development
 
 Start the server (Starts in `stdio` mode):
 
@@ -121,36 +131,16 @@ Start the server (Starts in `stdio` mode):
 node src/index.js
 ```
 
-## Project Structure
+### With MCP Inspector
 
-```text
-postgres-mcp/
-├── src/
-│   ├── config.js         # Environment parsing (Zod)
-│   ├── db.js             # Postgres client factory
-│   ├── openai_client.js   # OpenAI client factory
-│   ├── register_tools.js  # Tool registration orchestrator
-│   ├── index.js          # Entry point
-│   └── tools/            # Individual tool definitions
-│       ├── execute_raw_query.js
-│       ├── list_tables.js
-│       ├── describe_table.js
-│       └── execute_english_query.js
-├── .env.example          # Make sure to rename to `.env` and update it with correct values
-├── package.json
-└── README.md
+For debugging and development:
+
+```bash
+npx @modelcontextprotocol/inspector node src/index.js
 ```
 
 ## Debugging with MCP inspector
 `npx @modelcontextprotocol/inspector node src/index.js`
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/YourFeature`)
-3. Commit your changes (`git commit -m "feat: ..."`)
-4. Push to your branch (`git push origin feature/YourFeature`)
-5. Open a Pull Request
 
 ## License
 
